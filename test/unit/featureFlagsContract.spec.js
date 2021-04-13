@@ -39,7 +39,7 @@ describe('Feature Flags contract', () => {
 
       beforeEach(() => {
         rawUpdateConsensusParamsDocument = {
-
+          enableAtHeight: 42,
         };
       });
 
@@ -58,289 +58,15 @@ describe('Feature Flags contract', () => {
 
           expect(error.name).to.equal('JsonSchemaError');
           expect(error.keyword).to.equal('required');
-          expect(error.params.missingProperty).to.equal('label');
+          expect(error.params.missingProperty).to.equal('enableAtHeight');
         }
-      });
-
-      describe('label', () => {
-        it('should be present', async () => {
-          delete rawUpdateConsensusParamsDocument.label;
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('required');
-            expect(error.params.missingProperty).to.equal('label');
-          }
-        });
-
-        it('should follow pattern', async () => {
-          rawUpdateConsensusParamsDocument.label = 'invalid label';
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('pattern');
-            expect(error.dataPath).to.equal('.label');
-          }
-        });
-
-        it('should be longer than 3 chars', async () => {
-          rawUpdateConsensusParamsDocument.label = 'ab';
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('minLength');
-            expect(error.dataPath).to.equal('.label');
-          }
-        });
-
-        it('should be less than 63 chars', async () => {
-          rawUpdateConsensusParamsDocument.label = 'a'.repeat(64);
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('maxLength');
-            expect(error.dataPath).to.equal('.label');
-          }
-        });
-      });
-
-      describe('normalizedLabel', () => {
-        it('should be defined', async () => {
-          delete rawUpdateConsensusParamsDocument.normalizedLabel;
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('required');
-            expect(error.params.missingProperty).to.equal('normalizedLabel');
-          }
-        });
-
-        it('should follow pattern', async () => {
-          rawUpdateConsensusParamsDocument.normalizedLabel = 'InValiD label';
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('pattern');
-            expect(error.dataPath).to.equal('.normalizedLabel');
-          }
-        });
-
-        it('should be less than 63 chars', async () => {
-          rawUpdateConsensusParamsDocument.normalizedLabel = 'a'.repeat(64);
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('maxLength');
-            expect(error.dataPath).to.equal('.normalizedLabel');
-          }
-        });
-      });
-
-      describe('normalizedParentDomainName', () => {
-        it('should be defined', async () => {
-          delete rawUpdateConsensusParamsDocument.normalizedParentDomainName;
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('required');
-            expect(error.params.missingProperty).to.equal('normalizedParentDomainName');
-          }
-        });
-
-        it('should be less than 190 chars', async () => {
-          rawUpdateConsensusParamsDocument.normalizedParentDomainName = 'a'.repeat(191);
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('maxLength');
-            expect(error.dataPath).to.equal('.normalizedParentDomainName');
-          }
-        });
-
-        it('should follow pattern', async () => {
-          rawUpdateConsensusParamsDocument.normalizedParentDomainName = '&'.repeat(100);
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('pattern');
-            expect(error.dataPath).to.equal('.normalizedParentDomainName');
-          }
-        });
-      });
-
-      describe('preorderSalt', () => {
-        it('should be defined', async () => {
-          delete rawUpdateConsensusParamsDocument.preorderSalt;
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('required');
-            expect(error.params.missingProperty).to.equal('preorderSalt');
-          }
-        });
-
-        it('should not be empty', async () => {
-          rawUpdateConsensusParamsDocument.preorderSalt = Buffer.alloc(0);
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('minItems');
-            expect(error.dataPath).to.equal('.preorderSalt');
-          }
-        });
-
-        it('should be not less than 32 bytes', async () => {
-          rawUpdateConsensusParamsDocument.preorderSalt = crypto.randomBytes(10);
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('minItems');
-            expect(error.dataPath).to.equal('.preorderSalt');
-          }
-        });
-
-        it('should be not longer than 32 bytes', async () => {
-          rawUpdateConsensusParamsDocument.preorderSalt = crypto.randomBytes(40);
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('maxItems');
-            expect(error.dataPath).to.equal('.preorderSalt');
-          }
-        });
       });
 
       it('should not have additional properties', async () => {
         rawUpdateConsensusParamsDocument.someOtherProperty = 42;
 
         try {
-          dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
+          dpp.document.create(dataContract, identityId, 'updateConsensusParams', rawUpdateConsensusParamsDocument);
 
           expect.fail('should throw error');
         } catch (e) {
@@ -355,20 +81,128 @@ describe('Feature Flags contract', () => {
         }
       });
 
-      it('should be valid', async () => {
-        const domain = dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
+      describe('enabledAtHeight', () => {
+        it('should be present', async () => {
+          delete rawUpdateConsensusParamsDocument.enableAtHeight;
 
-        const result = await dpp.document.validate(domain);
+          try {
+            dpp.document.create(dataContract, identityId, 'updateConsensusParams', rawUpdateConsensusParamsDocument);
+
+            expect.fail('should throw error');
+          } catch (e) {
+            expect(e.name).to.equal('InvalidDocumentError');
+            expect(e.getErrors()).to.have.a.lengthOf(1);
+
+            const [error] = e.getErrors();
+
+            expect(error.name).to.equal('JsonSchemaError');
+            expect(error.keyword).to.equal('required');
+            expect(error.params.missingProperty).to.equal('enableAtHeight');
+          }
+        });
+
+        it('should be integer', () => {
+          rawUpdateConsensusParamsDocument.enableAtHeight = 'string';
+
+          try {
+            dpp.document.create(dataContract, identityId, 'updateConsensusParams', rawUpdateConsensusParamsDocument);
+
+            expect.fail('should throw error');
+          } catch (e) {
+            expect(e.name).to.equal('InvalidDocumentError');
+            expect(e.getErrors()).to.have.a.lengthOf(1);
+
+            const [error] = e.getErrors();
+
+            expect(error.name).to.equal('JsonSchemaError');
+            expect(error.keyword).to.equal('type');
+            expect(error.params.type).to.equal('integer');
+          }
+        });
+
+        it('should be at least 1', () => {
+          rawUpdateConsensusParamsDocument.enableAtHeight = 0;
+
+          try {
+            dpp.document.create(dataContract, identityId, 'updateConsensusParams', rawUpdateConsensusParamsDocument);
+
+            expect.fail('should throw error');
+          } catch (e) {
+            expect(e.name).to.equal('InvalidDocumentError');
+            expect(e.getErrors()).to.have.a.lengthOf(1);
+
+            const [error] = e.getErrors();
+
+            expect(error.name).to.equal('JsonSchemaError');
+            expect(error.keyword).to.equal('minimum');
+            expect(error.params.limit).to.equal(1);
+          }
+        });
+      });
+
+      it('should be valid', async () => {
+        const updateConsensusParams = dpp.document.create(dataContract, identityId, 'updateConsensusParams', rawUpdateConsensusParamsDocument);
+
+        const result = await dpp.document.validate(updateConsensusParams);
 
         expect(result.isValid()).to.be.true();
       });
+    });
 
-      describe('Records', () => {
-        it('should be defined', async () => {
-          delete rawUpdateConsensusParamsDocument.records;
+    describe('fixCumulativeFeesBug', () => {
+      let rawFixCumulativeFeesBug;
+
+      beforeEach(() => {
+        rawFixCumulativeFeesBug = {
+          enabled: true,
+          enableAtHeight: 42,
+        };
+      });
+
+      it('should have at least one property', () => {
+        rawFixCumulativeFeesBug = {};
+
+        try {
+          dpp.document.create(dataContract, identityId, 'fixCumulativeFeesBug', rawFixCumulativeFeesBug);
+
+          expect.fail('should throw error');
+        } catch (e) {
+          expect(e.name).to.equal('InvalidDocumentError');
+          expect(e.getErrors()).to.have.a.lengthOf(1);
+
+          const [error] = e.getErrors();
+
+          expect(error.name).to.equal('JsonSchemaError');
+          expect(error.keyword).to.equal('required');
+          expect(error.params.missingProperty).to.equal('enabled');
+        }
+      });
+
+      it('should not have additional properties', async () => {
+        rawFixCumulativeFeesBug.someOtherProperty = 42;
+
+        try {
+          dpp.document.create(dataContract, identityId, 'fixCumulativeFeesBug', rawFixCumulativeFeesBug);
+
+          expect.fail('should throw error');
+        } catch (e) {
+          expect(e.name).to.equal('InvalidDocumentError');
+          expect(e.getErrors()).to.have.a.lengthOf(1);
+
+          const [error] = e.getErrors();
+
+          expect(error.name).to.equal('JsonSchemaError');
+          expect(error.keyword).to.equal('additionalProperties');
+          expect(error.params.additionalProperty).to.equal('someOtherProperty');
+        }
+      });
+
+      describe('enabled', () => {
+        it('should be present', async () => {
+          delete rawFixCumulativeFeesBug.enabled;
 
           try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
+            dpp.document.create(dataContract, identityId, 'fixCumulativeFeesBug', rawFixCumulativeFeesBug);
 
             expect.fail('should throw error');
           } catch (e) {
@@ -379,15 +213,15 @@ describe('Feature Flags contract', () => {
 
             expect(error.name).to.equal('JsonSchemaError');
             expect(error.keyword).to.equal('required');
-            expect(error.params.missingProperty).to.equal('records');
+            expect(error.params.missingProperty).to.equal('enabled');
           }
         });
 
-        it('should not be empty', async () => {
-          rawUpdateConsensusParamsDocument.records = {};
+        it('should be boolean', () => {
+          rawFixCumulativeFeesBug.enabled = 'string';
 
           try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
+            dpp.document.create(dataContract, identityId, 'fixCumulativeFeesBug', rawFixCumulativeFeesBug);
 
             expect.fail('should throw error');
           } catch (e) {
@@ -397,152 +231,18 @@ describe('Feature Flags contract', () => {
             const [error] = e.getErrors();
 
             expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('minProperties');
-            expect(error.dataPath).to.equal('.records');
+            expect(error.keyword).to.equal('type');
+            expect(error.params.type).to.equal('boolean');
           }
-        });
-
-        it('should not have additional properties', async () => {
-          rawUpdateConsensusParamsDocument.records = {
-            someOtherProperty: 42,
-          };
-
-          try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-            expect.fail('should throw error');
-          } catch (e) {
-            expect(e.name).to.equal('InvalidDocumentError');
-            expect(e.getErrors()).to.have.a.lengthOf(1);
-
-            const [error] = e.getErrors();
-
-            expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('additionalProperties');
-            expect(error.dataPath).to.equal('.records');
-            expect(error.params.additionalProperty).to.equal('someOtherProperty');
-          }
-        });
-
-        describe('Dash Identity', () => {
-          it('should have either `dashUniqueIdentityId` or `dashAliasIdentityId`', async () => {
-            rawUpdateConsensusParamsDocument.records = {
-              dashUniqueIdentityId: identityId,
-              dashAliasIdentityId: identityId,
-            };
-
-            try {
-              dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-              expect.fail('should throw error');
-            } catch (e) {
-              expect(e.name).to.equal('InvalidDocumentError');
-              expect(e.getErrors()).to.have.a.lengthOf(1);
-
-              const [error] = e.getErrors();
-
-              expect(error.name).to.equal('JsonSchemaError');
-              expect(error.keyword).to.equal('maxProperties');
-              expect(error.dataPath).to.equal('.records');
-            }
-          });
-
-          describe('dashUniqueIdentityId', () => {
-            it('should no less than 32 bytes', async () => {
-              rawUpdateConsensusParamsDocument.records = {
-                dashUniqueIdentityId: crypto.randomBytes(30),
-              };
-
-              try {
-                dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-                expect.fail('should throw error');
-              } catch (e) {
-                expect(e.name).to.equal('InvalidDocumentError');
-                expect(e.getErrors()).to.have.a.lengthOf(1);
-
-                const [error] = e.getErrors();
-
-                expect(error.name).to.equal('JsonSchemaError');
-                expect(error.keyword).to.equal('minItems');
-                expect(error.dataPath).to.equal('.records.dashUniqueIdentityId');
-              }
-            });
-
-            it('should no more than 32 bytes', async () => {
-              rawUpdateConsensusParamsDocument.records = {
-                dashUniqueIdentityId: crypto.randomBytes(64),
-              };
-
-              try {
-                dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-                expect.fail('should throw error');
-              } catch (e) {
-                expect(e.name).to.equal('InvalidDocumentError');
-                expect(e.getErrors()).to.have.a.lengthOf(1);
-
-                const [error] = e.getErrors();
-
-                expect(error.name).to.equal('JsonSchemaError');
-                expect(error.keyword).to.equal('maxItems');
-                expect(error.dataPath).to.equal('.records.dashUniqueIdentityId');
-              }
-            });
-          });
-
-          describe('dashAliasIdentityId', () => {
-            it('should no less than 32 bytes', async () => {
-              rawUpdateConsensusParamsDocument.records = {
-                dashAliasIdentityId: crypto.randomBytes(30),
-              };
-
-              try {
-                dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-                expect.fail('should throw error');
-              } catch (e) {
-                expect(e.name).to.equal('InvalidDocumentError');
-                expect(e.getErrors()).to.have.a.lengthOf(1);
-
-                const [error] = e.getErrors();
-
-                expect(error.name).to.equal('JsonSchemaError');
-                expect(error.keyword).to.equal('minItems');
-                expect(error.dataPath).to.equal('.records.dashAliasIdentityId');
-              }
-            });
-
-            it('should no more than 32 bytes', async () => {
-              rawUpdateConsensusParamsDocument.records = {
-                dashAliasIdentityId: crypto.randomBytes(64),
-              };
-
-              try {
-                dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
-
-                expect.fail('should throw error');
-              } catch (e) {
-                expect(e.name).to.equal('InvalidDocumentError');
-                expect(e.getErrors()).to.have.a.lengthOf(1);
-
-                const [error] = e.getErrors();
-
-                expect(error.name).to.equal('JsonSchemaError');
-                expect(error.keyword).to.equal('maxItems');
-                expect(error.dataPath).to.equal('.records.dashAliasIdentityId');
-              }
-            });
-          });
         });
       });
 
-      describe('subdomainRules', () => {
-        it('should be defined', async () => {
-          delete rawUpdateConsensusParamsDocument.subdomainRules;
+      describe('enabledAtHeight', () => {
+        it('should be present', async () => {
+          delete rawFixCumulativeFeesBug.enableAtHeight;
 
           try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
+            dpp.document.create(dataContract, identityId, 'fixCumulativeFeesBug', rawFixCumulativeFeesBug);
 
             expect.fail('should throw error');
           } catch (e) {
@@ -553,15 +253,15 @@ describe('Feature Flags contract', () => {
 
             expect(error.name).to.equal('JsonSchemaError');
             expect(error.keyword).to.equal('required');
-            expect(error.params.missingProperty).to.equal('subdomainRules');
+            expect(error.params.missingProperty).to.equal('enableAtHeight');
           }
         });
 
-        it('should not have additional properties', async () => {
-          rawUpdateConsensusParamsDocument.subdomainRules.someOtherProperty = 42;
+        it('should be integer', () => {
+          rawFixCumulativeFeesBug.enableAtHeight = 'string';
 
           try {
-            dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
+            dpp.document.create(dataContract, identityId, 'fixCumulativeFeesBug', rawFixCumulativeFeesBug);
 
             expect.fail('should throw error');
           } catch (e) {
@@ -571,31 +271,37 @@ describe('Feature Flags contract', () => {
             const [error] = e.getErrors();
 
             expect(error.name).to.equal('JsonSchemaError');
-            expect(error.keyword).to.equal('additionalProperties');
-            expect(error.dataPath).to.equal('.subdomainRules');
+            expect(error.keyword).to.equal('type');
+            expect(error.params.type).to.equal('integer');
           }
         });
 
-        describe('allowSubdomains', () => {
-          it('should be boolean', async () => {
-            rawUpdateConsensusParamsDocument.subdomainRules.allowSubdomains = 'data';
+        it('should be at least 1', () => {
+          rawFixCumulativeFeesBug.enableAtHeight = 0;
 
-            try {
-              dpp.document.create(dataContract, identityId, 'domain', rawUpdateConsensusParamsDocument);
+          try {
+            dpp.document.create(dataContract, identityId, 'fixCumulativeFeesBug', rawFixCumulativeFeesBug);
 
-              expect.fail('should throw error');
-            } catch (e) {
-              expect(e.name).to.equal('InvalidDocumentError');
-              expect(e.getErrors()).to.have.a.lengthOf(1);
+            expect.fail('should throw error');
+          } catch (e) {
+            expect(e.name).to.equal('InvalidDocumentError');
+            expect(e.getErrors()).to.have.a.lengthOf(1);
 
-              const [error] = e.getErrors();
+            const [error] = e.getErrors();
 
-              expect(error.name).to.equal('JsonSchemaError');
-              expect(error.keyword).to.equal('type');
-              expect(error.dataPath).to.equal('.subdomainRules.allowSubdomains');
-            }
-          });
+            expect(error.name).to.equal('JsonSchemaError');
+            expect(error.keyword).to.equal('minimum');
+            expect(error.params.limit).to.equal(1);
+          }
         });
+      });
+
+      it('should be valid', async () => {
+        const fixCumulativeFeesBug = dpp.document.create(dataContract, identityId, 'fixCumulativeFeesBug', rawFixCumulativeFeesBug);
+
+        const result = await dpp.document.validate(fixCumulativeFeesBug);
+
+        expect(result.isValid()).to.be.true();
       });
     });
   });
