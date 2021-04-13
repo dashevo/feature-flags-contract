@@ -34,7 +34,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@dashevo/dpp": "~0.17.0",
+    "@dashevo/dpp": "~0.18.0",
     "chai": "^4.2.0",
     "dirty-chai": "^2.0.1",
     "eslint": "^6.7.2",
