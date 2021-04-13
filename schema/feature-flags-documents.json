@@ -81,7 +81,7 @@
     },
     "minProperties": 1,
     "additionalProperties": false,
-    "required": ["$createdAt", "$updatedAt", "enableAtHeight"]
+    "required": ["$createdAt", "enableAtHeight"]
   },
   "fixCumulativeFeesBug": {
     "description": "Defines if cumulative fees should be processed in an old way or new one",
@@ -108,6 +108,6 @@
     },
     "minProperties": 1,
     "additionalProperties": false,
-    "required": ["enableAtHeight", "enabled"]
+    "required": ["$createdAt", "enableAtHeight", "enabled"]
   }
 }
