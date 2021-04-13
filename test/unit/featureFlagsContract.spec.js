@@ -1,5 +1,3 @@
-const crypto = require('crypto');
-
 const DashPlatformProtocol = require('@dashevo/dpp');
 
 const generateRandomIdentifier = require('@dashevo/dpp/lib/test/utils/generateRandomIdentifier');
