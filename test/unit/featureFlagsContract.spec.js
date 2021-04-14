@@ -42,7 +42,10 @@ describe('Feature Flags contract', () => {
       });
 
       it('should have at least three properties', () => {
-        rawUpdateConsensusParamsDocument = {};
+        rawUpdateConsensusParamsDocument = {
+          $createdAt: (new Date()).getTime(),
+          $updatedAt: (new Date()).getTime(),
+        };
 
         try {
           dpp.document.create(dataContract, identityId, 'updateConsensusParams', rawUpdateConsensusParamsDocument);
