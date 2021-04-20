@@ -5,7 +5,7 @@
       {
         "properties": [
           {
-            "enableAtHeight": "asc"
+            "enableAtHeight": "desc"
           }
         ],
         "unique": true
@@ -89,7 +89,7 @@
       {
         "properties": [
           {
-            "enableAtHeight": "asc"
+            "enableAtHeight": "desc"
           }
         ],
         "unique": true
